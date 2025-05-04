@@ -30,11 +30,11 @@ const Slider = ({ onSlideChange }) => {
   };
 
   return (
-    <div className='w-full h-[90vh] flex items-center justify-center overflow-hidden relative'>
-      <div className='w-full h-[80vw] flex items-center justify-center overflow-hidden relative'>
+    <div className='w-full md:h-[90vh] h-[50vw] flex items-center justify-center overflow-hidden relative'>
+      <div className='w-full md:h-[80vw] flex items-center justify-center overflow-hidden relative'>
         <img
           src={currentImage}
-          className='w-full h-[70vw] object-cover transition-all duration-500'
+          className='w-full md:h-[70vw] h-full object-cover transition-all duration-500'
           alt={`slide-${currentIndex}`}
           onError={(e) => {
             e.target.onerror = null; 

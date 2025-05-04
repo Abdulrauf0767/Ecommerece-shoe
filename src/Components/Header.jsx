@@ -53,8 +53,8 @@ const Header = ({ currentSliderImage, onSlideChange }) => {
 
   return (
     <>
-      <div className={`w-full h-20 ${colors.textColor} transition-colors duration-500`}>
-        <header className={`w-full h-20 flex items-center justify-around fixed top-0 z-10 ${colors.bgColor} transition-colors duration-500`}>
+      <div className={`w-full h-20  transition-colors duration-500`}>
+        <header className={`w-full text-black h-20 flex items-center justify-around fixed top-0 z-10 bg-[#f3f1ef] transition-colors duration-500`}>
           <div className='h-20 w-[10%] overflow-hidden flex items-center justify-center bg-transparent'>
             <img src={logo} className='h-full object-contain' alt="logo" />
           </div>

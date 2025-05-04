@@ -6,22 +6,22 @@ class Card extends React.Component {
     const { id, name, image, price, description } = this.props;
     return (
       <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:scale-105 transition-all duration-300">
-        <NavLink to={`/productdetails/${id}`} className="block">
-          <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+        <NavLink to={`/productdetails/${id}`} className="flex flex-col h-full items-start justify-between  pb-2">
+          <div className="w-full lg:h-48 h-[120px] bg-gray-100 flex items-center justify-center">
             <img 
               src={image} 
               alt={name} 
               className="h-full object-contain"
             />
           </div>
-          <div className="p-4">
-            <h3 className="text-lg font-semibold mb-2">{name}</h3>
-            <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          <div className="pr-2 pl-2 h-fit">
+            <h3 className="md:text-lg text-[10px] font-semibold mb-2 line-clamp-2">{name}</h3>
+            <p className="text-gray-600 text-[8px] mb-3 line-clamp-2">
               {description}
             </p>
-            <div className="flex justify-between items-center">
-              <span className="font-bold text-lg">${price}</span>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+            <div className="flex flex-col h-fit md:flex-row justify-between items-start">
+              <span className="font-bold lg:text-lg text-xs">${price}</span>
+              <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded md:text-sm text-[5px]">
                 View Details
               </button>
             </div>
