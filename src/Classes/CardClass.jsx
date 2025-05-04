@@ -21,7 +21,7 @@ class Card extends React.Component {
             </p>
             <div className="flex flex-col h-fit md:flex-row justify-between items-start">
               <span className="font-bold lg:text-lg text-[9px]">${price}</span>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded md:text-sm text-[5px]">
+              <button className="bg-blue-500  hover:bg-blue-600 text-white px-3 py-1 rounded md:text-sm text-[5px]">
                 View Details
               </button>
             </div>
