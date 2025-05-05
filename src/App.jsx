@@ -7,6 +7,7 @@ import Wishlist from './Components/Wishlist';
 import Login from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import CartPage from './Components/CartPage';
+import Footer from './Components/Footer';
 
 const App = () => {
   return (
@@ -15,12 +16,14 @@ const App = () => {
         <>
           <Header />
           <Home />
+          <Footer/>
         </>
       } />
       <Route path='/productdetails/:id' element={
         <>
           <Header />
           <ProductDetails />
+          
         </>
       } />
       <Route path='/wishlist/:productdetails' element={<Wishlist />} />

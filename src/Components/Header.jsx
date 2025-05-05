@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from '/Images/logo.png';
+import { searchProducts, clearSearchResults } from '../Features/ProductSlice';
 
 const getImageDominantColor = (imageUrl) => {
   if (!imageUrl) return {
@@ -46,6 +47,9 @@ const Header = ({ currentSliderImage }) => {
 
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const cartItems = useSelector((state) => state.cart.items);
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -57,12 +61,27 @@ const Header = ({ currentSliderImage }) => {
     }
   }, [currentSliderImage]);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      dispatch(searchProducts(searchQuery));
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+      setShowMobileSearch(false);
+    }
+  };
+
+  const handleLogoClick = () => {
+    dispatch(clearSearchResults());
+    navigate('/');
+  };
+
   return (
     <>
       <div className={`w-full h-20 transition-colors duration-500 relative`}>
         <header className={`w-full h-20 flex items-center justify-between px-4 fixed top-0 z-10 bg-[#f3f1ef] transition-colors duration-500`}>
           {/* Logo */}
-          <div className='h-20 w-auto flex items-center bg-transparent'>
+          <div className='h-20 w-auto flex items-center bg-transparent cursor-pointer' onClick={handleLogoClick}>
             <img src={logo} className='h-full object-contain' alt="logo" />
           </div>
 
@@ -77,15 +96,22 @@ const Header = ({ currentSliderImage }) => {
           </nav>
 
           {/* Desktop Search */}
-          <form action="" className='w-[20%] h-20 md:flex items-center hidden'>
+          <form onSubmit={handleSearch} className='w-[20%] h-20 md:flex items-center hidden relative'>
             <label htmlFor="search" className='sr-only'>Search</label>
             <input 
               type="search" 
               name="search" 
               id="search" 
               placeholder='Search here' 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full border ${colors.borderColor} bg-opacity-70 bg-black outline-0 rounded pl-2 py-1 ${colors.textColor} placeholder-gray-300`} 
             />
+            <button type="submit" className="absolute right-2 text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
           </form>
 
           {/* Desktop Icons */}
@@ -103,7 +129,7 @@ const Header = ({ currentSliderImage }) => {
             </NavLink>
             
             {/* Wishlist */}
-            <NavLink to={'/wishlist/:productdetails'} type="button" className='hover:scale-110 transition-transform'>
+            <NavLink to={'/wishlist'} type="button" className='hover:scale-110 transition-transform'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
               </svg>
@@ -139,11 +165,23 @@ const Header = ({ currentSliderImage }) => {
       {/* Mobile Search Bar */}
       {showMobileSearch && (
         <div className="md:hidden w-full px-4 mt-20 fixed z-20 bg-[#f3f1ef] py-2">
-          <input 
-            type="search" 
-            placeholder="Search here..." 
-            className={`w-full border ${colors.borderColor} bg-opacity-70 bg-black outline-0 rounded pl-2 py-2 ${colors.textColor} placeholder-gray-300`} 
-          />
+          <form onSubmit={handleSearch} className="flex">
+            <input 
+              type="search" 
+              placeholder="Search here..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full border ${colors.borderColor} bg-opacity-70 bg-black outline-0 rounded-l pl-2 py-2 ${colors.textColor} placeholder-gray-300`} 
+            />
+            <button 
+              type="submit"
+              className={`bg-black bg-opacity-70 px-3 rounded-r ${colors.textColor}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+            </button>
+          </form>
         </div>
       )}
 
@@ -170,7 +208,7 @@ const Header = ({ currentSliderImage }) => {
             </NavLink>
             
             {/* Wishlist */}
-            <NavLink to={'/wishlist/:productdetails'} type="button" className='hover:scale-110 transition-transform'>
+            <NavLink to={'/wishlist'} type="button" className='hover:scale-110 transition-transform'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
               </svg>

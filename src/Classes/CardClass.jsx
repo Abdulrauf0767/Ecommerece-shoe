@@ -5,7 +5,7 @@ class Card extends React.Component {
   render() {
     const { id, name, image, price, description } = this.props;
     return (
-      <div className="bg-white rounded-lg shadow-md overflow-hidden border  border-gray-200 hover:scale-105 transition-all duration-300">
+      <div className="bg-white rounded-lg  overflow-hidden border  border-gray-300 hover:scale-105 transition-all duration-300">
         <NavLink 
           to={`/productdetails/${id}`} 
           className="flex flex-col 

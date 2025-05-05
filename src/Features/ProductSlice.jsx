@@ -41,12 +41,21 @@ export const fetchProductDetails = createAsyncThunk(
   }
 );
 
+export const searchProducts = createAsyncThunk(
+  'product/searchProducts',
+  async (query) => {
+    const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
+    return response.data.products;
+  }
+);
+
 const productSlice = createSlice({
   name: 'product',
   initialState: {
     list: [],
     productDetails: null,
-    wishlist: loadWishlistFromStorage(), // Initialize from localStorage
+    searchResults: [],
+    wishlist: loadWishlistFromStorage(),
     status: 'idle',
     error: null
   },
@@ -55,16 +64,19 @@ const productSlice = createSlice({
       const existingItem = state.wishlist.find(item => item.id === action.payload.id);
       if (!existingItem) {
         state.wishlist.push(action.payload);
-        saveWishlistToStorage(state.wishlist); // Save to localStorage
+        saveWishlistToStorage(state.wishlist);
       }
     },
     removeFromWishlist: (state, action) => {
       state.wishlist = state.wishlist.filter(item => item.id !== action.payload);
-      saveWishlistToStorage(state.wishlist); // Save to localStorage
+      saveWishlistToStorage(state.wishlist);
     },
     clearWishlist: (state) => {
       state.wishlist = [];
-      saveWishlistToStorage(state.wishlist); // Save to localStorage
+      saveWishlistToStorage(state.wishlist);
+    },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
     }
   },
   extraReducers: (builder) => {
@@ -90,9 +102,20 @@ const productSlice = createSlice({
       .addCase(fetchProductDetails.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(searchProducts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.searchResults = action.payload;
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   }
 });
 
-export const { addToWishlist, removeFromWishlist, clearWishlist } = productSlice.actions;
+export const { addToWishlist, removeFromWishlist, clearWishlist, clearSearchResults } = productSlice.actions;
 export default productSlice.reducer;
