@@ -12,7 +12,7 @@ const SignupForm = () => {
             backgroundRepeat: 'no-repeat' ,
           }}
           >
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-white p-8 rounded-lg shadow-md w-[90%] justify-self-center max-w-md">
         <h1 className="text-3xl font-bold text-center mb-6">SIGN UP</h1>
         
         
