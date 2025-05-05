@@ -12,7 +12,7 @@ class Card extends React.Component {
                      h-[200px] 
                      md:h-[300px] 
                      lg:h-[350px] 
-                     items-start justify-between pb-2"
+                     items-start justify-between p-2 md:p-4"
         >
           <div className="w-full h-[50%]  bg-gray-100 flex items-center justify-center">
             <img 
@@ -22,15 +22,15 @@ class Card extends React.Component {
             />
           </div>
           <div className="pr-2 pl-2 h-fit relative">
-            <h3 className="text-[10px] md:text-lg font-semibold mb-2 truncate w-20">
+            <h3 className="text-[10px] md:text-lg font-semibold mb-2 truncate w-[60%]">
               {name}
             </h3>
-            <p className="text-gray-600 text-[8px] lg:text-[10px] mb-3 line-clamp-2  sm:block">
+            <p className="text-gray-600 text-[8px] lg:text-[10px] mb-3 line-clamp-2  ">
               {description}
             </p>
             <div className="flex flex-col h-fit md:flex-row justify-between items-start">
-              <span className="font-bold lg:text-lg text-[9px] absolute top-0 right-3 text-red-500 ">${price}</span>
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded md:text-sm text-[5px] w-full md:w-[120px]">
+              <span className="font-bold lg:text-lg text-[9px] absolute top-0 right-[15%] text-red-500 ">${price}</span>
+              <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded md:text-sm text-[10px] w-full hover:scale-105 ">
                 View Details
               </button>
             </div>
