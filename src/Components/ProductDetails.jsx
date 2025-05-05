@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchProductDetails, addToWishlist } from '../Features/ProductSlice';
+import { addToCart } from '../Features/CartSlice';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,6 @@ const ProductDetails = () => {
   useEffect(() => {
     if (productDetails) {
       setCurrentImage(productDetails.thumbnail);
-      // Check if product is already in wishlist
       setIsInWishlist(wishlist.some(item => item.id === productDetails.id));
     }
   }, [productDetails, wishlist]);
@@ -36,6 +36,21 @@ const ProductDetails = () => {
         rating: productDetails.rating
       }));
       setIsInWishlist(true);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (productDetails) {
+      dispatch(addToCart({
+        id: productDetails.id,
+        title: productDetails.title,
+        price: productDetails.price,
+        thumbnail: productDetails.thumbnail,
+        description: productDetails.description,
+        brand: productDetails.brand,
+        discountPercentage: productDetails.discountPercentage,
+        stock: productDetails.stock
+      }));
     }
   };
 
@@ -130,7 +145,10 @@ const ProductDetails = () => {
             >
               {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
             </button>
-            <button className="w-full bg-blue-500 hover:bg-blue-600 mt-5 text-white py-3 px-4 rounded-lg font-medium transition duration-300">
+            <button 
+              onClick={handleAddToCart}
+              className="w-full bg-blue-500 hover:bg-blue-600 mt-5 text-white py-3 px-4 rounded-lg font-medium transition duration-300"
+            >
               Add to Cart
             </button>
           </div>

@@ -6,6 +6,7 @@ import ProductDetails from './Components/ProductDetails';
 import Wishlist from './Components/Wishlist';
 import Login from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
+import CartPage from './Components/CartPage';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path='/wishlist/:productdetails' element={<Wishlist />} />
       <Route path='/login' element={<Login/>} />
       <Route path='/signup' element={<SignupForm/>}/>
+      <Route path='/cart' element={<CartPage/>}/>
     </Routes>
   );
 };
