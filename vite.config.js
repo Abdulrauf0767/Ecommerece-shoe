@@ -5,7 +5,16 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['react-icons/fa']
-    }
+      external: [
+        'react-icons/fa',
+        'react-icons/fa/*'
+      ],
+    },
+  },
+  optimizeDeps: {
+    include: [
+      'react-icons/fa',
+      'react-icons/fa/*'
+    ],
   }
 });
