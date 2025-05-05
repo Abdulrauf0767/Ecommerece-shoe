@@ -8,6 +8,7 @@ import Login from './Components/LoginForm';
 import SignupForm from './Components/SignupForm';
 import CartPage from './Components/CartPage';
 import Footer from './Components/Footer';
+import SearchResults from './Components/SerachResults';
 
 const App = () => {
   return (
@@ -23,13 +24,25 @@ const App = () => {
         <>
           <Header />
           <ProductDetails />
-          
         </>
       } />
-      <Route path='/wishlist/:productdetails' element={<Wishlist />} />
+      <Route path='/wishlist' element={
+        <>
+          <Header />
+          <Wishlist />
+          <Footer />
+        </>
+      } />
       <Route path='/login' element={<Login/>} />
       <Route path='/signup' element={<SignupForm/>}/>
       <Route path='/cart' element={<CartPage/>}/>
+      <Route path='/search' element={
+        <>
+          <Header />
+          <SearchResults />
+          <Footer />
+        </>
+      } />
     </Routes>
   );
 };

@@ -1,30 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Helper function to load wishlist from localStorage
+// Helper functions for localStorage
 const loadWishlistFromStorage = () => {
   try {
     const serializedWishlist = localStorage.getItem('wishlist');
-    if (serializedWishlist === null) {
-      return [];
-    }
-    return JSON.parse(serializedWishlist);
+    return serializedWishlist ? JSON.parse(serializedWishlist) : [];
   } catch (err) {
     console.error("Could not load wishlist from localStorage", err);
     return [];
   }
 };
 
-// Helper function to save wishlist to localStorage
 const saveWishlistToStorage = (wishlist) => {
   try {
-    const serializedWishlist = JSON.stringify(wishlist);
-    localStorage.setItem('wishlist', serializedWishlist);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
   } catch (err) {
     console.error("Could not save wishlist to localStorage", err);
   }
 };
 
+// Thunks
 export const fetchProduct = createAsyncThunk(
   'product/fetchProduct',
   async () => {
@@ -43,9 +39,13 @@ export const fetchProductDetails = createAsyncThunk(
 
 export const searchProducts = createAsyncThunk(
   'product/searchProducts',
-  async (query) => {
-    const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
-    return response.data.products;
+  async (query, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
+      return response.data.products;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -55,6 +55,8 @@ const productSlice = createSlice({
     list: [],
     productDetails: null,
     searchResults: [],
+    searchQuery: '',
+    searchStatus: 'idle',
     wishlist: loadWishlistFromStorage(),
     status: 'idle',
     error: null
@@ -77,6 +79,11 @@ const productSlice = createSlice({
     },
     clearSearchResults: (state) => {
       state.searchResults = [];
+      state.searchQuery = '';
+      state.searchStatus = 'idle';
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -104,18 +111,25 @@ const productSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(searchProducts.pending, (state) => {
-        state.status = 'loading';
+        state.searchStatus = 'loading';
       })
       .addCase(searchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.searchStatus = 'succeeded';
         state.searchResults = action.payload;
       })
       .addCase(searchProducts.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+        state.searchStatus = 'failed';
+        state.error = action.payload || action.error.message;
+        state.searchResults = [];
       });
   }
 });
 
-export const { addToWishlist, removeFromWishlist, clearWishlist, clearSearchResults } = productSlice.actions;
+export const { 
+  addToWishlist, 
+  removeFromWishlist, 
+  clearWishlist, 
+  clearSearchResults,
+  setSearchQuery
+} = productSlice.actions;
 export default productSlice.reducer;
