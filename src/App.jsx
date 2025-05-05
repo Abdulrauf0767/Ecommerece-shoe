@@ -4,6 +4,8 @@ import Header from './Components/Header';
 import Home from './Components/Home';
 import ProductDetails from './Components/ProductDetails';
 import Wishlist from './Components/Wishlist';
+import Login from './Components/LoginForm';
+import SignupForm from './Components/SignupForm';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         </>
       } />
       <Route path='/wishlist/:productdetails' element={<Wishlist />} />
+      <Route path='/login' element={<Login/>} />
+      <Route path='/signup' element={<SignupForm/>}/>
     </Routes>
   );
 };

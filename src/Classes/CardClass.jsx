@@ -14,7 +14,7 @@ class Card extends React.Component {
                      lg:h-[350px] 
                      items-start justify-between pb-2"
         >
-          <div className="w-full h-[65px] md:h-[100px] bg-gray-100 flex items-center justify-center">
+          <div className="w-full h-[65px] md:h-[150px] bg-gray-100 flex items-center justify-center">
             <img 
               src={image} 
               alt={name} 
