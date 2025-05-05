@@ -1,4 +1,5 @@
-import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook, faInstagram, faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -11,10 +12,10 @@ const Footer = () => {
             Your one-stop online store for all the latest trends and best deals.
           </p>
           <div className="flex gap-4 mt-4">
-            <a href="#"><FaFacebook className="hover:text-blue-500" /></a>
-            <a href="#"><FaTwitter className="hover:text-sky-400" /></a>
-            <a href="#"><FaInstagram className="hover:text-pink-500" /></a>
-            <a href="#"><FaYoutube className="hover:text-red-500" /></a>
+            <button type="button"><FontAwesomeIcon icon={faFacebook} className="hover:text-sky-400"/></button>
+            <button type="button"><FontAwesomeIcon icon={faTwitter} className="hover:text-sky-400"/></button>
+            <a href="#"><FontAwesomeIcon icon={faInstagram} className="hover:text-pink-500" /></a>
+            <a href="#"><FontAwesomeIcon icon={faYoutube} className="hover:text-red-500" /></a>
           </div>
         </div>
 
