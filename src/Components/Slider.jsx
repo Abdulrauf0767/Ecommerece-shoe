@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const Slider = ({ onSlideChange }) => {
   const sliderList = [
@@ -10,44 +10,79 @@ const Slider = ({ onSlideChange }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImage, setCurrentImage] = useState(sliderList[0]);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
+  // Handle slide change and notify parent
   useEffect(() => {
     if (onSlideChange) {
       onSlideChange(currentImage);
     }
   }, [currentImage, onSlideChange]);
 
-  const handlePrev = () => {
-    const newIndex = currentIndex === 0 ? sliderList.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
-    setCurrentImage(sliderList[newIndex]);
-  };
+  // Auto slide functionality
+  useEffect(() => {
+    let intervalId;
+    if (isAutoPlaying) {
+      intervalId = setInterval(() => {
+        goToNext();
+      }, 3000); // Changed to 3 seconds for better UX
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [currentIndex, isAutoPlaying]);
 
-  const handleNext = () => {
-    const newIndex = currentIndex === sliderList.length - 1 ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-    setCurrentImage(sliderList[newIndex]);
-  };
+  const goToPrev = useCallback(() => {
+    setCurrentIndex(prevIndex => 
+      prevIndex === 0 ? sliderList.length - 1 : prevIndex - 1
+    );
+    setIsAutoPlaying(false);
+    setTimeout(() => setIsAutoPlaying(true), 5000); // Resume auto-play after 5 seconds
+  }, [sliderList.length]);
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex(prevIndex => 
+      prevIndex === sliderList.length - 1 ? 0 : prevIndex + 1
+    );
+  }, [sliderList.length]);
+
+  // Update current image when index changes
+  useEffect(() => {
+    setCurrentImage(sliderList[currentIndex]);
+  }, [currentIndex, sliderList]);
 
   return (
-    <div className='w-full md:h-[90vh] h-[50vw] flex items-center justify-center overflow-hidden relative'>
-      <div className='w-full md:h-[80vw] flex items-center justify-center overflow-hidden relative'>
-        <img
-          src={currentImage}
-          className='w-full md:h-[70vw] h-full object-cover transition-all duration-500'
-          alt={`slide-${currentIndex}`}
-          onError={(e) => {
-            e.target.onerror = null; 
-            e.target.src = '/placeholder-image.jpg';
-          }}
-        />
+    <div className='w-full md:h-[75vh] h-[50vw] flex items-center justify-center overflow-hidden relative group'>
+      <div className='w-full md:h-[75vw] flex items-center justify-center overflow-hidden relative'>
+        {/* Slide container with transition animation */}
+        <div className='relative w-full h-full'>
+          {sliderList.map((image, index) => (
+            <img
+              key={image}
+              src={image}
+              className={`absolute w-full md:h-[70vw] h-full object-cover transition-all duration-500 ${
+                index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+              alt={`slide-${index}`}
+              style={{
+                transform: `translateX(${(index - currentIndex) * 100}%)`,
+              }}
+              onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = '/placeholder-image.jpg';
+              }}
+            />
+          ))}
+        </div>
       </div>
 
+      {/* Navigation buttons */}
       <div className='w-[90%] absolute flex items-center justify-between top-1/2 transform -translate-y-1/2 text-white px-4'>
         <button
-          onClick={handlePrev}
+          onClick={goToPrev}
           type='button'
-          className='w-10 h-10 border border-gray-200 bg-black/40 rounded-full flex items-center justify-center hover:scale-105 transition-transform'
+          className='w-10 h-10 border border-gray-200 bg-black/40 rounded-full flex items-center justify-center hover:scale-105 transition-transform group-hover:opacity-100 opacity-0 md:opacity-100'
+          aria-label='Previous slide'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -61,9 +96,10 @@ const Slider = ({ onSlideChange }) => {
           </svg>
         </button>
         <button
-          onClick={handleNext}
+          onClick={goToNext}
           type='button'
-          className='w-10 h-10 border border-gray-200 bg-black/40 rounded-full flex items-center justify-center hover:scale-105 transition-transform'
+          className='w-10 h-10 border border-gray-200 bg-black/40 rounded-full flex items-center justify-center hover:scale-105 transition-transform group-hover:opacity-100 opacity-0 md:opacity-100'
+          aria-label='Next slide'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'

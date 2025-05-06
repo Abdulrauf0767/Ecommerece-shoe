@@ -12,6 +12,8 @@ import SearchResults from './Components/SerachResults';
 
 const App = () => {
   return (
+    <div className={`w-full h-full `}>
+
     <Routes>
       <Route path='/' element={
         <>
@@ -44,6 +46,7 @@ const App = () => {
         </>
       } />
     </Routes>
+      </div>
   );
 };
 
