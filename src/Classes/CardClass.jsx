@@ -9,7 +9,7 @@ const Card = ({ id, name, image, price, description }) => {
     <div className="bg-white rounded-lg overflow-hidden border border-gray-100  hover:scale-105 transition-all duration-500 h-full flex flex-col">
       <NavLink
         to={`/productdetails/${id}`}
-        className={`flex flex-col h-full ${darkMode ? 'bg-gray-100 shadow-md' : 'bg-black shadow-md shadow-gray-300'}`}
+        className={`flex flex-col h-full ${darkMode ? 'bg-gray-100 shadow-md' : 'bg-black shadow-md shadow-gray-300 text-white'}`}
       >
         <div className="w-full flex-grow bg-gray-100 flex items-center justify-center p-2">
           <img
@@ -27,7 +27,7 @@ const Card = ({ id, name, image, price, description }) => {
             <span className="font-bold text-red-500 whitespace-nowrap">${price}</span>
           </div>
 
-          <p className="text-gray-600 text-xs mb-3 line-clamp-2">
+          <p className={`text-gray-600 text-xs mb-3 line-clamp-2 ${darkMode ? 'text-black' : 'text-gray-300'}`}>
             {description}
           </p>
 

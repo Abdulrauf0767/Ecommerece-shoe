@@ -21,7 +21,7 @@ const Cards = () => {
 
   return (
     <>
-    <div className={`w-full h-full ${darkMode ? 'bg-white' : 'bg-black'} `}>
+    <div className={`w-full h-full ${darkMode ? 'bg-white' : 'bg-black text-white'} `}>
 
     <div className={`container mx-auto px-4 py-8 w-full max-w-7xl `}>
       <h1 className="text-3xl font-bold text-center mb-4">Products</h1>
